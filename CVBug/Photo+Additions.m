@@ -21,7 +21,12 @@
 //    [self populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageThree.png"] isEnhanced:YES usingMOC:moc];
 //}
 
-
++ (void)deletePhotos:(NSArray *)photos withMOC:(NSManagedObjectContext *)moc {
+    for (Photo *photo in photos) {
+        [moc deleteObject:photo];
+    }
+    [moc save:nil];
+}
 
 
 + (Photo *)populateCoreDataAndSaveWithImage:(UIImage *)theImage isEnhanced:(BOOL)enhanced usingMOC:(NSManagedObjectContext *)moc {

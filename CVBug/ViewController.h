@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
-
 @interface ViewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate,UIPopoverControllerDelegate,UIActionSheetDelegate, UIAlertViewDelegate,NSFetchedResultsControllerDelegate>
-
 
 @end
 

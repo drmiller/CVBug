@@ -17,25 +17,33 @@
 @implementation AppDelegate
 
 
-- (NSMutableArray *)photoCache {
-    if (_photoCache == nil) {
-        _photoCache = [@[] mutableCopy];
-    }
-    return _photoCache;
-}
-
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
-
-    Photo *photo = [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageOne.png"] isEnhanced:NO usingMOC:_managedObjectContext];
-    [self.photoCache addObject:photo];
     
-    photo = [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageTwo.png"] isEnhanced:NO usingMOC:_managedObjectContext];
-    [self.photoCache addObject:photo];
+    // Delete all previous photos
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Photo" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    NSArray *array = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (array == nil)
+    {
+        abort();
+    }
     
-    photo = [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageThree.png"] isEnhanced:YES usingMOC:_managedObjectContext];
-    [self.photoCache addObject:photo];
+    if ([array count] > 0) {
+        for (Photo *photo in array) {
+            [self.managedObjectContext deleteObject:photo];
+        }
+        NSError *error = nil;
+        if(![self.managedObjectContext save:&error]) {
+            NSLog(@"deletePhotosTask managedobject save error %@, %@", error, [error userInfo]);
+            abort();
+        }
+    }
+    [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageOne.png"] isEnhanced:NO usingMOC:self.managedObjectContext];
+    [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageTwo.png"] isEnhanced:NO usingMOC:_managedObjectContext];
+    [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageThree.png"] isEnhanced:YES usingMOC:_managedObjectContext];
+    [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageFour.png"] isEnhanced:YES usingMOC:_managedObjectContext];
     
     return YES;
 }

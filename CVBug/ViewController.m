@@ -7,7 +7,10 @@
 //
 
 #import "ViewController.h"
+
 #import "AppDelegate.h"
+#import "ENCollectionViewCell.h"
+#import "Photo+Additions.h" 
 
 @interface ViewController () {
 
@@ -21,6 +24,7 @@
 @property (nonatomic,strong) NSMutableArray *photos;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic,strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic,strong) NSMutableArray *selectedPhotos;
 
 @end
 
@@ -28,23 +32,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    
+
     self.managedObjectContext = [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    
+    _objectChanges = [NSMutableArray array];
+    _sectionChanges = [NSMutableArray array];
+    
+    _selectedPhotos = [NSMutableArray array];
+    
+    self.collectionView.allowsMultipleSelection = YES;
 }
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-
 
 
 #pragma mark -
 #pragma mark UICollectionView Datasource
-
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     
@@ -64,36 +65,15 @@
     return numberOfSections;
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    
-    NSLog(@"CV Datasource viewForSupplementaryElementOfKind for IndexPath: %li, %li",(long)indexPath.section, (long)indexPath.row);
-    
-    ENGalleryHeader *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                     withReuseIdentifier:@"GalleryHeaderView"
-                                                                            forIndexPath:indexPath];
-    headerView.headerLabel.text = (indexPath.section == ORIGINAL_SECTION) ? @"Originals" : @"Enhanced";
-    return headerView;
-}
-
-
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    ENCollectionViewCell *theCell = (ENCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
     
-    ENGalleryCollectionViewCell *theCell = (ENGalleryCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:GalleryCellIdentifier forIndexPath:indexPath];
     Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    [theCell setPhoto:photo forCollectionView:collectionView andIndexPath:indexPath];
+    theCell.imageView.image = photo.image;
 
-    // tried using indexPathsForSelectedPhotos, but couldn't get it to work
-    if ([self.selectedPhotos containsObject:photo]) {
-        
-        // this is for uploading and applying preset,
-        // or anything where cells are selected
-        [theCell markCellAsSelected:YES];
-        
-    } else {
-        [theCell markCellAsSelected:NO];
-    }
+    [theCell markCellAsSelected:[collectionView.indexPathsForSelectedItems containsObject:indexPath]];
 
-    NSLog(@"CV Datasource Cell for IndexPath: %li, %li",indexPath.section, indexPath.row);
+    NSLog(@"CV Datasource Cell for IndexPath: %li, %li",(long)indexPath.section, (long)indexPath.row);
     return theCell;
 }
 
@@ -105,39 +85,63 @@
 
 - (void)manageGallerySelectionCollectionView:(UICollectionView *)cv forIndexPath:(NSIndexPath *)indexPath didSelect:(BOOL)didSelect {
     
-    ENGalleryCollectionViewCell *theCell = (ENGalleryCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+    ENCollectionViewCell *theCell = (ENCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     [theCell markCellAsSelected:didSelect];
 
+    // if using an array to cache selected photo objects
     Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    
     if (didSelect) {
-        
         [self.selectedPhotos addObject:photo];
-        
     } else {
-
         [self.selectedPhotos removeObject:photo];
     }
-
 }
 
 - (void)collectionView:(UICollectionView *)cv didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    self.lastSelectedIndexPath = indexPath; // for scrolling through preview images???
-    
     [self manageGallerySelectionCollectionView:cv forIndexPath:indexPath didSelect:YES];
 }
 
 - (void)collectionView:(UICollectionView *)cv didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     [self manageGallerySelectionCollectionView:cv forIndexPath:indexPath didSelect:NO];
 }
 
+#pragma mark -
+#pragma mark Actions
+
+- (IBAction)deleteAction:(UIBarButtonItem *)sender {
+    
+//    for (Photo *photo in self.selectedPhotos) {
+//        [self.managedObjectContext deleteObject:photo];
+//        NSLog(@"photo objects deleted from selected photos cache");
+//    };
+    
+    for (NSIndexPath *indexPath in self.collectionView.indexPathsForSelectedItems) {
+        [self.managedObjectContext deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+        NSLog(@"photo object deleted using FRC");
+    };
+    
+    NSError *error = nil;
+    if(![self.managedObjectContext save:&error]) {
+        NSLog(@"deleteAction managedobject save error %@, %@", error, [error userInfo]);
+        abort();
+    }
+}
+
+- (IBAction)refreshReload:(id)sender {
+    self.fetchedResultsController = nil;
+    [self.collectionView reloadData];
+    
+}
+- (IBAction)addPhotos:(id)sender {
+    
+    [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageOne.png"] isEnhanced:NO usingMOC:self.managedObjectContext];
+    [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageThree.png"] isEnhanced:YES usingMOC:_managedObjectContext];
+    
+    [self refreshReload:nil];
+}
 
 #pragma mark -
 #pragma mark NSFetchedResultsController
-
-#pragma mark - Fetched results controller
 
 - (NSFetchedResultsController *)fetchedResultsController {
     
@@ -161,7 +165,7 @@
     // nil for section name key path means "no sections".
     self.fetchedResultsController = [[NSFetchedResultsController alloc]
                                      initWithFetchRequest:fetchRequest
-                                     managedObjectContext:AppDelegate.managedObjectContext
+                                     managedObjectContext:_managedObjectContext
                                      sectionNameKeyPath:@"enhanced"
                                      cacheName:nil];
     self.fetchedResultsController.delegate = self;
@@ -171,7 +175,7 @@
         NSLog(@"Unresolved fetchedResultsController:performFetch error %@, %@", error, [error userInfo]);
         abort();
     }
-    
+
     NSLog(@"Number of sections: %i", [[_fetchedResultsController sections] count]);
     
     return _fetchedResultsController;
@@ -179,12 +183,12 @@
 
 
 
-
+#pragma mark -
+#pragma mark NSFetchedResultsController with Collection View
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
-    
     NSMutableDictionary *change = [NSMutableDictionary new];
     
     switch((NSUInteger)type) {
@@ -195,8 +199,7 @@
             change[@(type)] = @(sectionIndex);
             break;
     }
-    
-    NSLog(@"didChangeSection Section: %li Type: %@", sectionIndex, type == NSFetchedResultsChangeDelete ? @"Delete" : @"Insert");
+    NSLog(@"didChangeSection Section: %li Type: %@", (unsigned long)sectionIndex, type == NSFetchedResultsChangeDelete ? @"Delete" : @"Insert");
     
     [_sectionChanges addObject:change];
 }
@@ -223,23 +226,21 @@
             break;
     }
     
-    NSLog(@"didChangeObject IndexPath: %li,%li Type: %@", indexPath.section,indexPath.row, type == NSFetchedResultsChangeDelete ? @"Delete" : @"Other");
+    NSLog(@"didChangeObject IndexPath: %li,%li Type: %@", (long)indexPath.section,(long)indexPath.row, type == NSFetchedResultsChangeDelete ? @"Delete" : @"Other");
     
     [_objectChanges addObject:change];
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    NSLog(@"controllerDidChangeContent sectionChanges: %li", [_sectionChanges count]);
+    NSLog(@"controllerDidChangeContent sectionChanges: %li", (unsigned long)[_sectionChanges count]);
     
     if ([_sectionChanges count] > 0)
     {
         NSLog(@"BEFORE performBatchUpdates for Sections");
         
-        @try {
-            
-            
-            
+//        @try {
+    
             [self.collectionView performBatchUpdates:^{
                 
                 for (NSDictionary *change in _sectionChanges)
@@ -268,27 +269,24 @@
                 NSLog(@"completion finished");
             }];
             
-        }
-        @catch (NSException *exception) {
-            NSLog(@"Exception caught");
-            //NSLog(@"Exception caught: %@", exception.description);
-            //[self.collectionView reloadData];
-        }
+//        }
+//        @catch (NSException *exception) {
+//            NSLog(@"Exception caught");
+//            //NSLog(@"Exception caught: %@", exception.description);
+//            //[self.collectionView reloadData];
+//        }
         
         NSLog(@"AFTER performBatchUpdates for Sections");
-        
     }
     
-    NSLog(@"controllerDidChangeContent objectChanges: %li sectionChanges: %li", [_objectChanges count], [_sectionChanges count]);
+    
+    NSLog(@"controllerDidChangeContent objectChanges: %li sectionChanges: %li", (unsigned long)[_objectChanges count], (unsigned long)[_sectionChanges count]);
     
     if ([_objectChanges count] > 0 && [_sectionChanges count] == 0)
-        //if ([_objectChanges count] > 0)
     {
         
         NSLog(@"[_objectChanges count] > 0 && [_sectionChanges count] == 0)");
-        //if ([_sectionChanges count] == 0) {
-        
-        
+
         if ([self shouldReloadCollectionViewToPreventKnownIssue] || self.collectionView.window == nil) {
             // This is to prevent a bug in UICollectionView from occurring.
             // The bug presents itself when inserting the first object or deleting the last object in a collection view.
@@ -299,12 +297,7 @@
             
             NSLog(@"CV reloadData");
             
-        }
-        
-        // }
-        
-        
-        else {
+        } else {
             
             NSLog(@"BEGIN performBatchUpdates for Objects");
             
@@ -371,9 +364,9 @@
             }
         }];
     }
-    
     NSLog(@"shouldReload: %@", shouldReload ? @"YES" : @"NO");
     
     return shouldReload;
 }
+
 @end

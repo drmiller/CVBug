@@ -20,6 +20,10 @@
 		959BF8381A10FA2000BB09BF /* ImageThree.png in Resources */ = {isa = PBXBuildFile; fileRef = 959BF8351A10FA2000BB09BF /* ImageThree.png */; };
 		959BF8391A10FA2000BB09BF /* ImageTwo.png in Resources */ = {isa = PBXBuildFile; fileRef = 959BF8361A10FA2000BB09BF /* ImageTwo.png */; };
 		959BF83A1A10FA2000BB09BF /* ImageOne.png in Resources */ = {isa = PBXBuildFile; fileRef = 959BF8371A10FA2000BB09BF /* ImageOne.png */; };
+		959BF83E1A11087F00BB09BF /* ENCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959BF83D1A11087F00BB09BF /* ENCollectionViewCell.m */; };
+		959BF8411A110A7100BB09BF /* GreenCheckBadge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 959BF83F1A110A7100BB09BF /* GreenCheckBadge@2x.png */; };
+		959BF8421A110A7100BB09BF /* GreenCheckBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = 959BF8401A110A7100BB09BF /* GreenCheckBadge.png */; };
+		959BF8441A112C2400BB09BF /* ImageFour.png in Resources */ = {isa = PBXBuildFile; fileRef = 959BF8431A112C2400BB09BF /* ImageFour.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +58,11 @@
 		959BF8351A10FA2000BB09BF /* ImageThree.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ImageThree.png; sourceTree = "<group>"; };
 		959BF8361A10FA2000BB09BF /* ImageTwo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ImageTwo.png; sourceTree = "<group>"; };
 		959BF8371A10FA2000BB09BF /* ImageOne.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ImageOne.png; sourceTree = "<group>"; };
+		959BF83C1A11087F00BB09BF /* ENCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENCollectionViewCell.h; sourceTree = "<group>"; };
+		959BF83D1A11087F00BB09BF /* ENCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENCollectionViewCell.m; sourceTree = "<group>"; };
+		959BF83F1A110A7100BB09BF /* GreenCheckBadge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GreenCheckBadge@2x.png"; sourceTree = "<group>"; };
+		959BF8401A110A7100BB09BF /* GreenCheckBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GreenCheckBadge.png; sourceTree = "<group>"; };
+		959BF8431A112C2400BB09BF /* ImageFour.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ImageFour.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +108,8 @@
 				959BF80A1A10EDCE00BB09BF /* AppDelegate.m */,
 				959BF80F1A10EDCE00BB09BF /* ViewController.h */,
 				959BF8101A10EDCE00BB09BF /* ViewController.m */,
+				959BF83C1A11087F00BB09BF /* ENCollectionViewCell.h */,
+				959BF83D1A11087F00BB09BF /* ENCollectionViewCell.m */,
 				959BF8121A10EDCE00BB09BF /* Main.storyboard */,
 				959BF8151A10EDCE00BB09BF /* Images.xcassets */,
 				959BF8171A10EDCF00BB09BF /* LaunchScreen.xib */,
@@ -150,6 +161,9 @@
 		959BF83B1A10FA2900BB09BF /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				959BF8431A112C2400BB09BF /* ImageFour.png */,
+				959BF83F1A110A7100BB09BF /* GreenCheckBadge@2x.png */,
+				959BF8401A110A7100BB09BF /* GreenCheckBadge.png */,
 				959BF8351A10FA2000BB09BF /* ImageThree.png */,
 				959BF8361A10FA2000BB09BF /* ImageTwo.png */,
 				959BF8371A10FA2000BB09BF /* ImageOne.png */,
@@ -238,12 +252,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				959BF8421A110A7100BB09BF /* GreenCheckBadge.png in Resources */,
 				959BF8381A10FA2000BB09BF /* ImageThree.png in Resources */,
 				959BF8391A10FA2000BB09BF /* ImageTwo.png in Resources */,
 				959BF83A1A10FA2000BB09BF /* ImageOne.png in Resources */,
+				959BF8441A112C2400BB09BF /* ImageFour.png in Resources */,
 				959BF8141A10EDCE00BB09BF /* Main.storyboard in Resources */,
 				959BF8191A10EDCF00BB09BF /* LaunchScreen.xib in Resources */,
 				959BF8161A10EDCF00BB09BF /* Images.xcassets in Resources */,
+				959BF8411A110A7100BB09BF /* GreenCheckBadge@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,6 +280,7 @@
 			files = (
 				959BF80B1A10EDCE00BB09BF /* AppDelegate.m in Sources */,
 				959BF8081A10EDCE00BB09BF /* main.m in Sources */,
+				959BF83E1A11087F00BB09BF /* ENCollectionViewCell.m in Sources */,
 				959BF8111A10EDCE00BB09BF /* ViewController.m in Sources */,
 				959BF8301A10EF5500BB09BF /* Photo.m in Sources */,
 				959BF8331A10F21800BB09BF /* Photo+Additions.m in Sources */,

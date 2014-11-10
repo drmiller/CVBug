@@ -12,6 +12,8 @@
 
 + (Photo *)populateCoreDataAndSaveWithImage:(UIImage *)theImage isEnhanced:(BOOL)enhanced usingMOC:(NSManagedObjectContext *)moc;
 
++ (void)deletePhotos:(NSArray *)photos withMOC:(NSManagedObjectContext *)moc;
+
 //+ (void)addImagesToCoreDataWithMOC:(NSManagedObjectContext *)moc;
 
 @end
