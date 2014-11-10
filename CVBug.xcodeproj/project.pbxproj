@@ -15,6 +15,11 @@
 		959BF8161A10EDCF00BB09BF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 959BF8151A10EDCE00BB09BF /* Images.xcassets */; };
 		959BF8191A10EDCF00BB09BF /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 959BF8171A10EDCF00BB09BF /* LaunchScreen.xib */; };
 		959BF8251A10EDCF00BB09BF /* CVBugTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 959BF8241A10EDCF00BB09BF /* CVBugTests.m */; };
+		959BF8301A10EF5500BB09BF /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 959BF82F1A10EF5500BB09BF /* Photo.m */; };
+		959BF8331A10F21800BB09BF /* Photo+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 959BF8321A10F21800BB09BF /* Photo+Additions.m */; };
+		959BF8381A10FA2000BB09BF /* ImageThree.png in Resources */ = {isa = PBXBuildFile; fileRef = 959BF8351A10FA2000BB09BF /* ImageThree.png */; };
+		959BF8391A10FA2000BB09BF /* ImageTwo.png in Resources */ = {isa = PBXBuildFile; fileRef = 959BF8361A10FA2000BB09BF /* ImageTwo.png */; };
+		959BF83A1A10FA2000BB09BF /* ImageOne.png in Resources */ = {isa = PBXBuildFile; fileRef = 959BF8371A10FA2000BB09BF /* ImageOne.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +47,13 @@
 		959BF81E1A10EDCF00BB09BF /* CVBugTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CVBugTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		959BF8231A10EDCF00BB09BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		959BF8241A10EDCF00BB09BF /* CVBugTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CVBugTests.m; sourceTree = "<group>"; };
+		959BF82E1A10EF5500BB09BF /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
+		959BF82F1A10EF5500BB09BF /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
+		959BF8311A10F21800BB09BF /* Photo+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Photo+Additions.h"; sourceTree = "<group>"; };
+		959BF8321A10F21800BB09BF /* Photo+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Photo+Additions.m"; sourceTree = "<group>"; };
+		959BF8351A10FA2000BB09BF /* ImageThree.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ImageThree.png; sourceTree = "<group>"; };
+		959BF8361A10FA2000BB09BF /* ImageTwo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ImageTwo.png; sourceTree = "<group>"; };
+		959BF8371A10FA2000BB09BF /* ImageOne.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ImageOne.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +102,8 @@
 				959BF8121A10EDCE00BB09BF /* Main.storyboard */,
 				959BF8151A10EDCE00BB09BF /* Images.xcassets */,
 				959BF8171A10EDCF00BB09BF /* LaunchScreen.xib */,
-				959BF80C1A10EDCE00BB09BF /* CVBug.xcdatamodeld */,
+				959BF83B1A10FA2900BB09BF /* Images */,
+				959BF8341A10F63700BB09BF /* Model */,
 				959BF8051A10EDCE00BB09BF /* Supporting Files */,
 			);
 			path = CVBug;
@@ -120,6 +133,28 @@
 				959BF8231A10EDCF00BB09BF /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		959BF8341A10F63700BB09BF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				959BF80C1A10EDCE00BB09BF /* CVBug.xcdatamodeld */,
+				959BF82E1A10EF5500BB09BF /* Photo.h */,
+				959BF82F1A10EF5500BB09BF /* Photo.m */,
+				959BF8311A10F21800BB09BF /* Photo+Additions.h */,
+				959BF8321A10F21800BB09BF /* Photo+Additions.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		959BF83B1A10FA2900BB09BF /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				959BF8351A10FA2000BB09BF /* ImageThree.png */,
+				959BF8361A10FA2000BB09BF /* ImageTwo.png */,
+				959BF8371A10FA2000BB09BF /* ImageOne.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,6 +206,7 @@
 				TargetAttributes = {
 					959BF8011A10EDCE00BB09BF = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = QZ99U9UMPF;
 					};
 					959BF81D1A10EDCF00BB09BF = {
 						CreatedOnToolsVersion = 6.1;
@@ -202,6 +238,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				959BF8381A10FA2000BB09BF /* ImageThree.png in Resources */,
+				959BF8391A10FA2000BB09BF /* ImageTwo.png in Resources */,
+				959BF83A1A10FA2000BB09BF /* ImageOne.png in Resources */,
 				959BF8141A10EDCE00BB09BF /* Main.storyboard in Resources */,
 				959BF8191A10EDCF00BB09BF /* LaunchScreen.xib in Resources */,
 				959BF8161A10EDCF00BB09BF /* Images.xcassets in Resources */,
@@ -225,6 +264,8 @@
 				959BF80B1A10EDCE00BB09BF /* AppDelegate.m in Sources */,
 				959BF8081A10EDCE00BB09BF /* main.m in Sources */,
 				959BF8111A10EDCE00BB09BF /* ViewController.m in Sources */,
+				959BF8301A10EF5500BB09BF /* Photo.m in Sources */,
+				959BF8331A10F21800BB09BF /* Photo+Additions.m in Sources */,
 				959BF80E1A10EDCE00BB09BF /* CVBug.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,6 +390,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = CVBug/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -359,6 +401,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = CVBug/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -409,7 +452,7 @@
 				959BF8271A10EDCF00BB09BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		959BF8281A10EDCF00BB09BF /* Build configuration list for PBXNativeTarget "CVBug" */ = {
 			isa = XCConfigurationList;
@@ -418,6 +461,7 @@
 				959BF82A1A10EDCF00BB09BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 		959BF82B1A10EDCF00BB09BF /* Build configuration list for PBXNativeTarget "CVBugTests" */ = {
 			isa = XCConfigurationList;
@@ -426,6 +470,7 @@
 				959BF82D1A10EDCF00BB09BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 

@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+#import "Photo+Additions.h"
+
 @interface AppDelegate ()
 
 @end
@@ -15,8 +17,26 @@
 @implementation AppDelegate
 
 
+- (NSMutableArray *)photoCache {
+    if (_photoCache == nil) {
+        _photoCache = [@[] mutableCopy];
+    }
+    return _photoCache;
+}
+
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+
+    Photo *photo = [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageOne.png"] isEnhanced:NO usingMOC:_managedObjectContext];
+    [self.photoCache addObject:photo];
+    
+    photo = [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageTwo.png"] isEnhanced:NO usingMOC:_managedObjectContext];
+    [self.photoCache addObject:photo];
+    
+    photo = [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageThree.png"] isEnhanced:YES usingMOC:_managedObjectContext];
+    [self.photoCache addObject:photo];
+    
     return YES;
 }
 
