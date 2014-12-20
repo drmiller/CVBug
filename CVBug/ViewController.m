@@ -238,13 +238,15 @@
 {
     NSLog(@"controllerDidChangeContent sectionChanges: %li", (unsigned long)[_sectionChanges count]);
     
+    [self.collectionView performBatchUpdates:^{
+    
     if ([_sectionChanges count] > 0)
     {
         NSLog(@"BEFORE performBatchUpdates for Sections");
         
 //        @try {
     
-            [self.collectionView performBatchUpdates:^{
+
                 
                 for (NSDictionary *change in _sectionChanges)
                 {
@@ -268,9 +270,6 @@
                         }
                     }];
                 }
-            } completion:^(BOOL finished){
-                NSLog(@"completion finished");
-            }];
             
 //        }
 //        @catch (NSException *exception) {
@@ -285,57 +284,63 @@
     
     NSLog(@"controllerDidChangeContent objectChanges: %li sectionChanges: %li", (unsigned long)[_objectChanges count], (unsigned long)[_sectionChanges count]);
     
-    if ([_objectChanges count] > 0 && [_sectionChanges count] == 0)
-    {
+    if ([_objectChanges count] > 0) {
         
         NSLog(@"[_objectChanges count] > 0 && [_sectionChanges count] == 0)");
 
-        if ([self shouldReloadCollectionViewToPreventKnownIssue] || self.collectionView.window == nil) {
-            // This is to prevent a bug in UICollectionView from occurring.
-            // The bug presents itself when inserting the first object or deleting the last object in a collection view.
-            // http://stackoverflow.com/questions/12611292/uicollectionview-assertion-failure
-            // This code should be removed once the bug has been fixed, it is tracked in OpenRadar
-            // http://openradar.appspot.com/12954582
-            [self.collectionView reloadData];
-            
-            NSLog(@"CV reloadData");
-            
-        } else {
-            
+//        if ([self shouldReloadCollectionViewToPreventKnownIssue] || self.collectionView.window == nil) {
+//            // This is to prevent a bug in UICollectionView from occurring.
+//            // The bug presents itself when inserting the first object or deleting the last object in a collection view.
+//            // http://stackoverflow.com/questions/12611292/uicollectionview-assertion-failure
+//            // This code should be removed once the bug has been fixed, it is tracked in OpenRadar
+//            // http://openradar.appspot.com/12954582
+//            [self.collectionView reloadData];
+//            
+//            NSLog(@"CV reloadData");
+//            
+//        } else {
+        
             NSLog(@"BEGIN performBatchUpdates for Objects");
             
             [self.collectionView performBatchUpdates:^{
                 
-                for (NSDictionary *change in _objectChanges)
-                {
+                for (NSDictionary *change in _objectChanges) {
+                    
                     [change enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, id obj, BOOL *stop) {
                         
-                        NSFetchedResultsChangeType type = [key unsignedIntegerValue];
-                        switch (type)
-                        {
-                            case NSFetchedResultsChangeInsert:
-                                [self.collectionView insertItemsAtIndexPaths:@[obj]];
-                                break;
-                            case NSFetchedResultsChangeDelete:
-                                [self.collectionView deleteItemsAtIndexPaths:@[obj]];
-                                break;
-                            case NSFetchedResultsChangeUpdate:
-                                [self.collectionView reloadItemsAtIndexPaths:@[obj]];
-                                break;
-                            case NSFetchedResultsChangeMove:
-                                [self.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
-                                break;
-                        }
-                    }];
-                }
-            } completion:nil];
-        }
-    }
+                            NSFetchedResultsChangeType type = [key unsignedIntegerValue];
+                            switch (type)
+                            {
+                                case NSFetchedResultsChangeInsert:
+                                    [self.collectionView insertItemsAtIndexPaths:@[obj]];
+                                    break;
+                                case NSFetchedResultsChangeDelete:
+                                    [self.collectionView deleteItemsAtIndexPaths:@[obj]];
+                                    break;
+                                case NSFetchedResultsChangeUpdate:
+                                    [self.collectionView reloadItemsAtIndexPaths:@[obj]];
+                                    break;
+                                case NSFetchedResultsChangeMove:
+                                    [self.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
+                                    break;
+                            } // switch
+                        
+                        }]; // enumerate blocks
+                    
+                } // for
+                
+            } completion:nil]; // performBatchUpdates
+        } // if objectchange
+        
+    } completion:^(BOOL finished){
+        NSLog(@"completion finished");
+    }];
     
     [_sectionChanges removeAllObjects];
     [_objectChanges removeAllObjects];
 }
 
+/*
 - (BOOL)shouldReloadCollectionViewToPreventKnownIssue {
     
      NSLog(@"shouldReload Called");
@@ -373,5 +378,5 @@
     
     return shouldReload;
 }
-
+*/
 @end
