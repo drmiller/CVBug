@@ -20,9 +20,10 @@
     NSMutableArray *_sectionChanges;
     
 }
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic,strong) NSMutableArray *photos;
+
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+
+@property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic,strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic,strong) NSMutableArray *selectedPhotos;
 
@@ -134,8 +135,10 @@
 }
 - (IBAction)addPhotos:(id)sender {
     
-    [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageOne.png"] isEnhanced:NO usingMOC:self.managedObjectContext];
-    [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageThree.png"] isEnhanced:YES usingMOC:_managedObjectContext];
+    [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageOne.png"] isEnhanced:YES usingMOC:self.managedObjectContext];
+    [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageTwo.png"] isEnhanced:YES usingMOC:_managedObjectContext];
+    [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageThree.png"] isEnhanced:NO usingMOC:self.managedObjectContext];
+    [Photo populateCoreDataAndSaveWithImage:[UIImage imageNamed:@"ImageFour.png"] isEnhanced:NO usingMOC:_managedObjectContext];
     
     [self refreshReload:nil];
 }
@@ -334,6 +337,8 @@
 }
 
 - (BOOL)shouldReloadCollectionViewToPreventKnownIssue {
+    
+     NSLog(@"shouldReload Called");
     
     __block BOOL shouldReload = NO;
     for (NSDictionary *change in _objectChanges) {
